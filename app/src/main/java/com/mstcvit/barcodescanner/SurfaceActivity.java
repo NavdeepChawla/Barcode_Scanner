@@ -119,6 +119,7 @@ public class SurfaceActivity extends AppCompatActivity {
                                 Data d=new Data();
                                 d.Key=ds.getKey();
                                 d.Value=ds.getValue().toString();
+                                System.out.println(d.Value);
                                 a.add(d);
                             }
                             Reg=0;
