@@ -12,7 +12,9 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,13 +22,19 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SurfaceActivity extends AppCompatActivity {
+    ArrayList<Data> a=new ArrayList<>();
+    int Reg=0;
     SurfaceView sf;
     CameraSource cs;
     TextView tv;
@@ -97,19 +105,59 @@ public class SurfaceActivity extends AppCompatActivity {
                 final SparseArray<Barcode> codes=detections.getDetectedItems();
                 if(codes.size()!=0)
                 {
-                    tv.post(new Runnable()
+                    Vibrator vibrator=(Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(1000);
+                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+                    //myRef.child(codes.valueAt(0).displayValue).setValue("Registered");
+                    myRef.addValueEventListener(new ValueEventListener()
                     {
                         @Override
-                        public void run()
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                         {
-                            Vibrator vibrator=(Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(1000);
-                            tv.append(codes.valueAt(0).displayValue+" has registered.\n");
+                            for(DataSnapshot ds : dataSnapshot.getChildren())
+                            {
+                                Data d=new Data();
+                                d.Key=ds.getKey();
+                                d.Value=ds.getValue().toString();
+                                a.add(d);
+                            }
+                            Reg=0;
+                            for (int i = 0; i <a.size() ; i++)
+                            {
+                                Data d=new Data();
+                                d=a.get(i);
+                                if(d.Key.equals(codes.valueAt(0).displayValue))
+                                {
+                                    Reg=1;
+                                    d.Value="Has Registered";
+                                    a.set(i,d);
+                                    DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                                    mRef.child(d.Key).setValue("Has Registered");
+                                    break;
+                                }
+                            }
+                            if(Reg==0)
+                            {
+                                Toast.makeText(getApplicationContext(),codes.valueAt(0).displayValue+" has not registered.",Toast.LENGTH_LONG).show();
+                            }
+                            else
+                            {
+                                tv.post(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        tv.append(codes.valueAt(0).displayValue+" has registered.\n");
 
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError)
+                        {
                         }
                     });
-                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-                    myRef.child(codes.valueAt(0).displayValue).setValue("Registered");
                 }
             }
         });
