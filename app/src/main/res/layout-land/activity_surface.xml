@@ -6,31 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".SurfaceActivity">
 
-    <SurfaceView
-        android:id="@+id/camsurfaceview"
-        android:layout_width="281dp"
-        android:layout_height="216dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="104dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constrainedHeight="false" />
-
-    <TextView
-        android:id="@+id/testtv"
-        android:layout_width="327dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:textAlignment="center"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.644"
-        app:layout_constraintStart_toEndOf="@+id/camsurfaceview"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.416" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SurfaceView
+            android:id="@+id/camsurfaceview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_constrainedHeight="false" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="300dp"
+        android:background="@color/trans"
+        android:backgroundTint="@color/trans"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:shadowColor="#000"
+        android:shadowDx="0"
+        android:shadowDy="30"
+        android:shadowRadius="50"
+        app:cardCornerRadius="40dp"
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:backgroundTint="@color/trans"
+            android:background="@color/trans"
+            android:id="@+id/testtv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:textAlignment="center" />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

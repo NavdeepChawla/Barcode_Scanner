@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class SurfaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_surface);
         sf = findViewById(R.id.camsurfaceview);
         tv = findViewById(R.id.testtv);
@@ -163,6 +165,14 @@ public class SurfaceActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {

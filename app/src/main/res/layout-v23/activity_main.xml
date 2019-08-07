@@ -20,7 +20,7 @@
         android:focusable="true"
         android:foreground="@drawable/ic_camera"
         app:background="@color/colorPrimary"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="#F30404"
         app:borderWidth="0dp"
         app:elevation="1dp"
         app:fabCustomSize="50dp"
